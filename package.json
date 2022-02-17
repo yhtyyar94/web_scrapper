@@ -1,0 +1,29 @@
+{
+  "name": "web_scrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yhtyyar94/web_scrapper.git"
+  },
+  "keywords": [],
+  "author": "Black Eagle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yhtyyar94/web_scrapper/issues"
+  },
+  "homepage": "https://github.com/yhtyyar94/web_scrapper#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "cheerio": "^1.0.0-rc.10",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "puppeteer": "^13.3.2",
+    "request": "^2.88.2"
+  }
+}
