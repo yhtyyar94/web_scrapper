@@ -1,11 +1,15 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 5000;
 const app = express();
 
 // Middlewares
-app.use(cors({ origin: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
 // amazon web scrapper
 const { search } = require("./amazon");
