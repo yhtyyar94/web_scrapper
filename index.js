@@ -6,16 +6,16 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 // Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 app.use(
   cors({
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
 
 // amazon web scrapper
 const { search } = require("./amazon");
