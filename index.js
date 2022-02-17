@@ -10,6 +10,10 @@ app.use(express.json());
 // amazon web scrapper
 const { search } = require("./amazon");
 
+app.get("/", (req, res) => {
+  res.send("Hello World!!!");
+});
+
 app.post("/amazon", async (req, res) => {
   const { title } = req.query;
   await search(title, res);
