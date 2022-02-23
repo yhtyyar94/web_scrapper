@@ -6,28 +6,19 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 // Middlewares
-app.use(
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // amazon web scrapper
-const { search } = require("./amazon");
+const amazonRouter = require("./routes/amazon.routes");
 
 app.get("/", (req, res) => {
   res.send("Hello World!!!");
 });
-
-app.post("/amazon", async (req, res) => {
-  const { title } = req.query;
-  await search(title, res);
-});
+app.use("/amazon", amazonRouter);
 
 app.listen(PORT, (err) => {
   if (err) {
