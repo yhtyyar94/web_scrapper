@@ -10,14 +10,20 @@ exports.randomSearch = (req, res) => {
       page > 1 && "&page=" + page
     }`,
     (error, response, html) => {
+      if (response.statusCode == 404) {
+        res
+          .status(404)
+          .json({ message: `Sorry we didn't find this item... :(` });
+      }
+
       if (!error && response.statusCode == 200) {
         const $ = cheerio.load(html);
-        const arr = [];
+        const result = [];
 
         const src = $(".s-image");
         src.each((i, el) => {
           const imageSrc = $(el).attr("src");
-          arr[i] = {
+          result[i] = {
             imageSrc,
           };
           $(el).parent().parent().removeAttr("href");
@@ -26,8 +32,8 @@ exports.randomSearch = (req, res) => {
         const title = $("div h2 a span");
         title.each((i, el) => {
           const title = $(el).text();
-          arr[i] = {
-            ...arr[i],
+          result[i] = {
+            ...result[i],
             title,
           };
         });
@@ -35,8 +41,8 @@ exports.randomSearch = (req, res) => {
         const url = $("div h2 a span");
         url.each((i, el) => {
           const url = $(el).parent().attr("href");
-          arr[i] = {
-            ...arr[i],
+          result[i] = {
+            ...result[i],
             url: "https://www.amazon.com" + url,
             id: url.includes("dp/")
               ? url.substring(url.indexOf("dp/") + 3, url.indexOf("dp/") + 13)
@@ -50,8 +56,8 @@ exports.randomSearch = (req, res) => {
         const rating = $("a i span");
         rating.each((i, el) => {
           const rating = $(el).text();
-          arr[i] = {
-            ...arr[i],
+          result[i] = {
+            ...result[i],
             rating,
           };
         });
@@ -60,10 +66,10 @@ exports.randomSearch = (req, res) => {
         originalPrice.each((i, el) => {
           const url = $(el).parent().attr("href");
           const originalPrice = $(el).text();
-          for (let index = 0; index < arr.length; index++) {
-            if (arr[index].url == "https://www.amazon.com" + url) {
-              arr[index] = {
-                ...arr[index],
+          for (let index = 0; index < result.length; index++) {
+            if (result[index].url == "https://www.amazon.com" + url) {
+              result[index] = {
+                ...result[index],
                 originalPrice: originalPrice?.substring(
                   1,
                   originalPrice.length / 2
@@ -78,10 +84,10 @@ exports.randomSearch = (req, res) => {
         salesPrice.each((i, el) => {
           const url = $(el).parent().attr("href");
           const salesPrice = $(el).text();
-          for (let index = 0; index < arr.length; index++) {
-            if (arr[index].url == "https://www.amazon.com" + url) {
-              arr[index] = {
-                ...arr[index],
+          for (let index = 0; index < result.length; index++) {
+            if (result[index].url == "https://www.amazon.com" + url) {
+              result[index] = {
+                ...result[index],
                 salesPrice: salesPrice?.substring(1, salesPrice.length / 2),
                 currency: salesPrice?.substring(0, 1),
               };
@@ -89,7 +95,7 @@ exports.randomSearch = (req, res) => {
           }
         });
 
-        res.json(arr.filter((item) => item.title && item.url));
+        res.status(200).json(result.filter((item) => item.title && item.url));
       } else {
         res.json(error ? error.message : error);
       }
