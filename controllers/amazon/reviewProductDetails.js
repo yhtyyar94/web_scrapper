@@ -1,5 +1,4 @@
 const cheerio = require("cheerio");
-const { errors } = require("puppeteer");
 const request = require("request");
 
 exports.reviewProductDetails = (req, res) => {
