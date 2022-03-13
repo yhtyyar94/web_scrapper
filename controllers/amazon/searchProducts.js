@@ -3,11 +3,11 @@ const request = require("request");
 
 exports.randomSearch = (req, res) => {
   const { title } = req.query;
-  const { page = 1 } = req.query;
-
+  const { page } = req.query;
+  console.log(page);
   request(
     `https://www.amazon.com/s?k=${title?.split(" ").join("+")}${
-      page > 1 && "&page=" + page
+      page ? "&page=" + page : ""
     }`,
     (error, response, html) => {
       if (response.statusCode == 404) {
