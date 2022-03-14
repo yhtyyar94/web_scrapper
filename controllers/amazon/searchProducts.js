@@ -4,7 +4,7 @@ const request = require("request");
 exports.randomSearch = (req, res) => {
   const { title } = req.query;
   const { page } = req.query;
-  console.log(page);
+
   request(
     `https://www.amazon.com/s?k=${title?.split(" ").join("+")}${
       page ? "&page=" + page : ""

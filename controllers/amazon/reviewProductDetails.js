@@ -28,10 +28,11 @@ exports.reviewProductDetails = (req, res) => {
         result.product_title = product_title?.trim();
 
         const rating = $(
-          "a .a-icon.a-icon-star.a-star-4-5 span.a-icon-alt"
+          "a.a-popover-trigger.a-declarative i span.a-icon-alt"
         ).text();
         result.rating =
           rating?.length > 18 ? rating.substring(0, rating.length / 2) : rating;
+        console.log(rating);
 
         //price info
         const priceInfo = $(
