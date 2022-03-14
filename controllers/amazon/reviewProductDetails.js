@@ -32,7 +32,6 @@ exports.reviewProductDetails = (req, res) => {
         ).text();
         result.rating =
           rating?.length > 18 ? rating.substring(0, rating.length / 2) : rating;
-        console.log(rating);
 
         //price info
         const priceInfo = $(
@@ -48,8 +47,11 @@ exports.reviewProductDetails = (req, res) => {
         });
         result.priceInfo = {};
         texts.forEach((item, index) => {
+          const withoutColon = item.includes(":")
+            ? item.replace(":", "")
+            : item;
           if (index % 2 === 0) {
-            result.priceInfo[item] = texts[index + 1];
+            result.priceInfo[withoutColon] = texts[index + 1];
           }
         });
 
