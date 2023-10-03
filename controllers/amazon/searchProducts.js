@@ -1,7 +1,8 @@
+const { default: axios } = require("axios");
 const cheerio = require("cheerio");
 const request = require("request");
 
-exports.randomSearch = (req, res) => {
+exports.randomSearch = async (req, res) => {
   const { title } = req.query;
   const { page } = req.query;
 
@@ -9,7 +10,13 @@ exports.randomSearch = (req, res) => {
     `https://www.amazon.com/s?k=${title?.split(" ").join("+")}${
       page ? "&page=" + page : ""
     }`,
-    (error, response, html) => {
+    async (error, response, html) => {
+      const h = await axios.get(
+        `https://www.amazon.com/s?k=${title?.split(" ").join("+")}${
+          page ? "&page=" + page : ""
+        }`
+      );
+
       if (response.statusCode == 404) {
         res
           .status(404)
@@ -17,7 +24,7 @@ exports.randomSearch = (req, res) => {
       }
 
       if (!error && response.statusCode == 200) {
-        const $ = cheerio.load(html);
+        const $ = cheerio.load(h.data);
         const result = [];
 
         const src = $(".s-image");

@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5555;
 const app = express();
 
 // Middlewares
